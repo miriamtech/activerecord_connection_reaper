@@ -8,6 +8,7 @@ AllCops:
   SuggestExtensions: false
   Exclude:
     - 'gemfiles/**/*'
+    - 'vendor/bundle/**/*'
 
 Layout/EmptyLineAfterGuardClause:
   Enabled: false

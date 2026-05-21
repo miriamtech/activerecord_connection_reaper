@@ -14,8 +14,6 @@ Gem::Specification.new do |spec|
   spec.license = 'MIT'
   spec.homepage = 'https://github.com/miriamtech/activerecord_connection_reaper'
   spec.metadata['allowed_push_host'] = 'https://rubygems.org'
-  spec.metadata['homepage_uri'] = spec.homepage
-  spec.metadata['source_code_uri'] = 'github.com:miriamtech/activerecord_connection_reaper.git'
 
   spec.required_ruby_version = '~> 3.4.0'
 

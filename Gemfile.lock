@@ -198,9 +198,9 @@ DEPENDENCIES
   appraisal (~> 2.5)
   minitest (~> 5.16)
   rake (~> 13.0)
-  rubocop (~> 1.21)
-  rubocop-minitest (~> 0.39)
-  rubocop-rails (~> 2.35)
+  rubocop (= 1.86.2)
+  rubocop-minitest (= 0.39.1)
+  rubocop-rails (= 2.35.2)
   sqlite3 (~> 2.9)
 
 BUNDLED WITH

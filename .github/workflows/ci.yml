@@ -1,4 +1,4 @@
-name: Test
+name: CI
 
 on: [push, pull_request]
 
@@ -33,6 +33,10 @@ jobs:
     # Only deploy if running on master
     if: github.ref == 'refs/heads/master'
 
+    permissions:
+      id-token: write # Required for trusted publishing
+      contents: write # Required to push tags
+
     steps:
       - uses: actions/checkout@v6
         with:
@@ -44,10 +48,12 @@ jobs:
           node-version: '26'
 
       - name: Install semantic release
-        run: npm install semantic-release semantic-release-rubygem
+        run: npm install semantic-release@25 @webhippie/semantic-release-rubygem@7
+
+      # Setup credentials using trusted publishing (ephemeral access via OIDC)
+      - uses: rubygems/configure-rubygems-credentials@762a4b77c3300434bb57c7ce80b20e36231927aa # This is v2.0.0
 
       - name: Run semantic release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GEM_HOST_API_KEY: ${{ secrets.GEM_HOST_API_KEY }}
         run: npx semantic-release

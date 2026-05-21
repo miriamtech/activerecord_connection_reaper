@@ -1,0 +1,8 @@
+# This is the configuration file for semantic-release
+
+# Standard plugins, minus npm, plus rubygems
+plugins:
+  - "@semantic-release/commit-analyzer"
+  - "@semantic-release/release-notes-generator"
+  - "@semantic-release/github"
+  - "@webhippie/semantic-release-rubygem"
