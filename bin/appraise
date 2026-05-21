@@ -1,0 +1,78 @@
+#!/bin/bash -e
+#
+# Run tests against configured appraisals. See `appraise -h` for usage.
+
+# Re-exec: run this script in docker container if necessary
+ROOT_DIR="$(realpath "$(CDPATH="" cd -- "$(dirname -- "$0")" && pwd)/../")"
+
+appraisals_array=()
+while getopts ":ha:" opt; do
+	case $opt in
+		a)
+			appraisals_array+=("$OPTARG")
+			;;
+		h)
+			echo "Usage:"
+			echo "  appraise [-h] [ -a <appraisal> ]..."
+			echo ""
+			echo "  Run tests against appraisals. By default it will run all of them,"
+			echo "  but that can be customized via the options."
+			echo ""
+			echo "  -h: Display this help message"
+			echo "  -a <appraisal>: Run tests for this specific appraisal. Can be"
+			echo "                  specified multiple times."
+			exit 0
+			;;
+		\?)
+			echo "Invalid option: -$OPTARG" >&2
+			exit 1
+			;;
+		:)
+			echo "Option -$OPTARG requires an argument" >&2
+			exit 1
+			;;
+	esac
+done
+shift $((OPTIND-1))
+
+if [ $# -ne 0 ]; then
+	echo "No positional arguments are supported. Please run 'appraise -h' for help."
+	exit 1
+fi
+
+# Now generate the gemfiles for all appraisals
+bundle exec appraisal generate
+
+if [ "${#appraisals_array[@]}" -eq "0" ]; then
+	# No appraisals were specified, so we're going to run our tests against all
+	# appraisals. We could do that simply with `appraisal ./bin/run-tests`,
+	# but it doesn't do a good job of making it obvious which appraisal is
+	# currently under test. Let's do that loop ourselves so we can manage
+	# printing. First step, get a list of all appraisals.
+	readarray -t appraisals_array <<< "$(bundle exec appraisal list)"
+else
+	# Specific appraisals were requested. Make sure that appraisal exists,
+	# or exit. We exit non-zero here because we rely on this in CI, where
+	# we have a matrix of ruby and appraisals and not all appraisals
+	# support all rubies.
+	for appraisal in "${appraisals_array[@]}"; do
+		if ! bundle exec appraisal list | grep -qw "$appraisal"; then
+			echo "The '$appraisal' appraisal doesn't appear to be valid for this version of Ruby."
+			exit 0
+		fi
+	done
+fi
+
+# Install all gems required for the appraisals
+for appraisal in "${appraisals_array[@]}"; do
+	printf "\n== Appraisal being installed: %s ==\n\n" "$appraisal"
+
+	bundle exec appraisal "$appraisal" bundle install
+done
+
+# Loop through the appraisals, running tests against each with a helpful print
+# specifying which one is currently under test
+for appraisal in "${appraisals_array[@]}"; do
+	printf "\n== Appraisal under test: %s ==\n\n" "$appraisal"
+	bundle exec appraisal "$appraisal" rake
+done

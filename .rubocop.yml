@@ -1,0 +1,88 @@
+plugins:
+  - rubocop-minitest
+  - rubocop-rails
+
+AllCops:
+  TargetRailsVersion: 8.1
+  NewCops: disable
+  SuggestExtensions: false
+  Exclude:
+    - 'gemfiles/**/*'
+
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+
+Layout/MultilineArrayLineBreaks:
+  Enabled: true
+
+Layout/MultilineHashKeyLineBreaks:
+  Enabled: true
+
+Layout/MultilineMethodArgumentLineBreaks:
+  Enabled: true
+
+Lint/AssignmentInCondition:
+  Enabled: false
+
+Lint/UnusedBlockArgument:
+  AutoCorrect: false
+
+Lint/UnusedMethodArgument:
+  AutoCorrect: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/ClassLength:
+  Exclude:
+    - test/**/*
+
+Metrics/MethodLength:
+  Max: 20
+  Exclude:
+    - test/**/*
+
+Naming/HeredocDelimiterNaming:
+  Enabled: false
+
+Naming/VariableNumber:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/EmptyMethod:
+  AutoCorrect: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/NumericLiterals:
+  AutoCorrect: false
+
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: comma
+
+Rails/SaveBang:
+  Enabled: true
+
+Rails/ActionOrder:
+  Enabled: false
+
+Rails/ActiveRecordCallbacksOrder:
+  Enabled: false
+
+Rails/RefuteMethods:
+  Enabled: false
+
+Rails/FilePath:
+  Enabled: false
