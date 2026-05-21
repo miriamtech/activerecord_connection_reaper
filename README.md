@@ -35,4 +35,4 @@ options in your database configuration almost as if you were actually on Rails v
 Note that this gem is purposefully not compatible with Rails v8.1, to make sure you
 remember to remove it when you ARE finally able to update.
 
-[1]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/ConnectionPool.html#class-ActiveRecord::ConnectionAdapters::ConnectionPool-label-Options
+[1]: https://api.rubyonrails.org/v8.1.3/classes/ActiveRecord/ConnectionAdapters/ConnectionPool.html#class-ActiveRecord::ConnectionAdapters::ConnectionPool-label-Options
