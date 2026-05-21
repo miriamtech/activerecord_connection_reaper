@@ -7,8 +7,11 @@ class ReaperCheckMaxAgeTest < TestCase
   class FakePool
     attr_reader :reaped, :flushed, :retired
 
-    def initialize
+    def initialize(discarded: false)
       @reaped = false
+      @flushed = false
+      @retired = false
+      @discarded = discarded
     end
 
     def reap
@@ -22,6 +25,14 @@ class ReaperCheckMaxAgeTest < TestCase
     def retire_old_connections
       @retired = true
     end
+
+    def discard!
+      @discarded = true
+    end
+
+    def __patched_discarded?
+      @discarded
+    end
   end
 
   def setup
@@ -34,6 +45,8 @@ class ReaperCheckMaxAgeTest < TestCase
     @reaper.run
     Thread.pass until @pool.reaped
     assert @pool.reaped
+  ensure
+    @pool.discard!
   end
 
   def test_run_flushes
@@ -41,6 +54,8 @@ class ReaperCheckMaxAgeTest < TestCase
     @reaper.run
     Thread.pass until @pool.flushed
     assert @pool.flushed
+  ensure
+    @pool.discard!
   end
 
   def test_run_retires
@@ -48,5 +63,23 @@ class ReaperCheckMaxAgeTest < TestCase
     @reaper.run
     Thread.pass until @pool.retired
     assert @pool.retired
+  ensure
+    @pool.discard!
+  end
+
+  def test_reaper_does_not_reap_discarded_connection_pools
+    discarded_pool = FakePool.new(discarded: true)
+    pool = FakePool.new
+    frequency = 0.001
+
+    ActiveRecord::ConnectionAdapters::ConnectionPool::Reaper.new(discarded_pool, frequency).run
+    ActiveRecord::ConnectionAdapters::ConnectionPool::Reaper.new(pool, frequency).run
+
+    Thread.pass until pool.flushed
+
+    refute discarded_pool.reaped
+    assert pool.reaped
+  ensure
+    pool.discard!
   end
 end

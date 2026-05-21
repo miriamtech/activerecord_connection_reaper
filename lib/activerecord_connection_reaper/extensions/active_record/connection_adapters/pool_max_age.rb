@@ -28,6 +28,10 @@ module ActiveRecordConnectionReaper
 
             old_connections.each(&:disconnect!)
           end
+
+          def __patched_discarded?
+            @connections.nil?
+          end
         end
       end
     end
