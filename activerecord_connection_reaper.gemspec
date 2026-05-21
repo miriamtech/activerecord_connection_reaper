@@ -15,7 +15,8 @@ Gem::Specification.new do |spec|
   spec.homepage = 'https://github.com/miriamtech/activerecord_connection_reaper'
   spec.metadata['allowed_push_host'] = 'https://rubygems.org'
 
-  spec.required_ruby_version = '~> 3.4.0'
+  # Only expand this as we add tests for new versions
+  spec.required_ruby_version = ['>= 2.5', '< 3.5']
 
   # Uncomment the line below to require MFA for gem pushes.
   # This helps protect your gem from supply chain attacks by ensuring

@@ -1,9 +1,9 @@
-plugins:
+require:
   - rubocop-minitest
   - rubocop-rails
 
 AllCops:
-  TargetRailsVersion: 8.1
+  TargetRailsVersion: 8.0
   NewCops: disable
   SuggestExtensions: false
   Exclude:
@@ -75,9 +75,6 @@ Style/TrailingCommaInHashLiteral:
 
 Rails/SaveBang:
   Enabled: true
-
-Rails/ActionOrder:
-  Enabled: false
 
 Rails/ActiveRecordCallbacksOrder:
   Enabled: false

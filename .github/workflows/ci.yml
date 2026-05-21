@@ -9,12 +9,23 @@ jobs:
     strategy:
       matrix:
         ruby:
+          - '2.5.9'
+          - '2.7.8'
+          - '3.0.7'
+          - '3.1.7'
+          - '3.2.11'
+          - '3.3.11'
           - '3.4.9'
 
     steps:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
+
+      # Our ruby versions are too diverse for the same lockfile to apply to all.
+      # We run appraisals anyway, so it's not like it's really used to run tests.
+      - name: Remove Gemfile.lock
+        run: rm -f Gemfile.lock
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -51,7 +62,7 @@ jobs:
         run: npm install semantic-release@25 @webhippie/semantic-release-rubygem@7
 
       # Setup credentials using trusted publishing (ephemeral access via OIDC)
-      - uses: rubygems/configure-rubygems-credentials@762a4b77c3300434bb57c7ce80b20e36231927aa # This is v2.0.0
+      - uses: rubygems/configure-rubygems-credentials@762a4b77c3300434bb57c7ce80b20e36231927aa # v2.0.0
 
       - name: Run semantic release
         env:

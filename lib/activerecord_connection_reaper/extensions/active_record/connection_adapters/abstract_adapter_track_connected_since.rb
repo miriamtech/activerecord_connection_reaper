@@ -23,9 +23,9 @@ module ActiveRecordConnectionReaper
             duration * (1.0 - @pool_jitter)
           end
 
-          MAX_JITTER = 0.0..1.0
+          MAX_JITTER = 1.0
           def max_jitter
-            (@config[:pool_jitter] || 0.2).to_f.clamp(MAX_JITTER)
+            (@config[:pool_jitter] || 0.2).to_f.clamp(0.0, MAX_JITTER)
           end
         end
       end

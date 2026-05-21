@@ -3,6 +3,7 @@
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 require 'activerecord_connection_reaper'
 require 'activerecord_connection_reaper/railtie'
+require 'minitest/test'
 
 # By default, use an in-memory sqlite3 database specific to this test run.
 # Change it by defining the DATABASE_URL environment variable.

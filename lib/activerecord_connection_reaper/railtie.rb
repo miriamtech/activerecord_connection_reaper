@@ -9,9 +9,9 @@ module ActiveRecordConnectionReaper
       require 'activerecord_connection_reaper/extensions/active_record/connection_adapters/reaper_check_max_age'
       require 'activerecord_connection_reaper/extensions/active_record/connection_adapters/pool_max_age'
 
-      ActiveRecord::ConnectionAdapters::AbstractAdapter.prepend(ActiveRecordConnectionReaper::Extensions::ActiveRecord::ConnectionAdapters::AbstractAdapterTrackConnectedSince)
-      ActiveRecord::ConnectionAdapters::ConnectionPool::Reaper.prepend(ActiveRecordConnectionReaper::Extensions::ActiveRecord::ConnectionAdapters::ReaperCheckMaxAge)
-      ActiveRecord::ConnectionAdapters::ConnectionPool.prepend(ActiveRecordConnectionReaper::Extensions::ActiveRecord::ConnectionAdapters::PoolMaxAge)
+      ActiveRecord::ConnectionAdapters::AbstractAdapter.prepend(ActiveRecordConnectionReaper::Extensions::ActiveRecord::ConnectionAdapters::AbstractAdapterTrackConnectedSince) # rubocop:disable Layout/LineLength
+      ActiveRecord::ConnectionAdapters::ConnectionPool::Reaper.prepend(ActiveRecordConnectionReaper::Extensions::ActiveRecord::ConnectionAdapters::ReaperCheckMaxAge) # rubocop:disable Layout/LineLength
+      ActiveRecord::ConnectionAdapters::ConnectionPool.prepend(ActiveRecordConnectionReaper::Extensions::ActiveRecord::ConnectionAdapters::PoolMaxAge) # rubocop:disable Layout/LineLength
     end
   end
 end
