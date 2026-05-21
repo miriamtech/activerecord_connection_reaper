@@ -1,39 +1,38 @@
-# ActiverecordConnectionReaper
+# Retire old database connections just like Rails v8.1
 
-TODO: Delete this and the text below, and describe your gem
+Rails v8.1 introduced [some new options][1] for managing database connections,
+particularly a few that are useful when running against a pooler, e.g.
+PgBouncer, namely:
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/activerecord_connection_reaper`. To experiment with that code, run `bin/console` for an interactive prompt.
+- **max_age**: number of seconds the pool will allow the connection to exist
+  before retiring it at next checkin. (default Float::INFINITY).
+- **pool_jitter**: maximum reduction factor to apply to max_age interval
+  (default 0.2; range 0.0-1.0).
+
+An existing (but not well-documented) parameter that is also useful in this
+scenario is **reaping_frequency**, which determines how often the reaper
+thread checks for connections to retire (it defaults to 60 seconds).
+
+However, there's a problem here: **this is only supported as of Rails v8.1**.
+Maybe your site isn't running the latest and greatest yet. Maybe... *gasp*
+maybe you're still on Ruby v2.5! What is a poor developer to do? Stop whining
+and update, obviously. While you're working on that, you can use this gem.
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
+Add this line to your application's Gemfile:
 
-Install the gem and add to the application's Gemfile by executing:
-
-```bash
-bundle add UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
+```ruby
+gem 'activerecord_connection_reaper'
 ```
 
-If bundler is not being used to manage dependencies, install the gem by executing:
+Then install it:
 
-```bash
-gem install UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG
-```
+    $ bundle install
 
-## Usage
+Once you do that, you can use the `max_age`, `pool_jitter`, and `reaping_frequency`
+options in your database configuration almost as if you were actually on Rails v8.1.
+Note that this gem is purposefully not compatible with Rails v8.1, to make sure you
+remember to remove it when you ARE finally able to update.
 
-TODO: Write usage instructions here
-
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/activerecord_connection_reaper.
-
-## License
-
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+[1]: https://api.rubyonrails.org/classes/ActiveRecord/ConnectionAdapters/ConnectionPool.html#class-ActiveRecord::ConnectionAdapters::ConnectionPool-label-Options
