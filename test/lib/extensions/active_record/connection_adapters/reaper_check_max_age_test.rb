@@ -3,7 +3,7 @@
 require 'test_helper'
 require 'activerecord_connection_reaper/extensions/active_record/connection_adapters/abstract_adapter_track_connected_since' # rubocop:disable Layout/LineLength
 
-class ReaperCheckMaxAgeTest < TestCase
+class ReaperCheckMaxAgeTest < Minitest::Test
   class FakePool
     attr_reader :reaped, :flushed, :retired
 

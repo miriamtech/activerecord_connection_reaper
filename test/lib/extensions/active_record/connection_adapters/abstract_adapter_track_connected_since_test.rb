@@ -3,7 +3,7 @@
 require 'test_helper'
 require 'activerecord_connection_reaper/extensions/active_record/connection_adapters/abstract_adapter_track_connected_since' # rubocop:disable Layout/LineLength
 
-class AbstractAdapterTrackConnectedSinceTest < TestCase
+class AbstractAdapterTrackConnectedSinceTest < Minitest::Test
   def setup
     @connection = ActiveRecord::Base.connection
   end

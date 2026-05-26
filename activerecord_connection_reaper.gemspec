@@ -30,5 +30,5 @@ Gem::Specification.new do |spec|
   # Version 8.1 was where native support for max_age etc. landed, so this gem
   # is no longer necessary at that point.
   spec.add_dependency 'activerecord', '>= 5.1', '< 8.1'
-  spec.add_dependency 'railties', '>= 5.1', '< 8.1'
+  spec.add_dependency 'activesupport', '>= 5.1', '< 8.1'
 end

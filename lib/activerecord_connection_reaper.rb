@@ -1,8 +1,14 @@
 # frozen_string_literal: true
 
 require_relative 'activerecord_connection_reaper/version'
-require_relative 'activerecord_connection_reaper/railtie'
-require 'active_record'
+require 'active_support'
 
-module ActiveRecordConnectionReaper
+ActiveSupport.on_load(:active_record) do
+  require 'activerecord_connection_reaper/extensions/active_record/connection_adapters/abstract_adapter_track_connected_since' # rubocop:disable Layout/LineLength
+  require 'activerecord_connection_reaper/extensions/active_record/connection_adapters/reaper_check_max_age'
+  require 'activerecord_connection_reaper/extensions/active_record/connection_adapters/pool_max_age'
+
+  ActiveRecord::ConnectionAdapters::AbstractAdapter.prepend(ActiveRecordConnectionReaper::Extensions::ActiveRecord::ConnectionAdapters::AbstractAdapterTrackConnectedSince) # rubocop:disable Layout/LineLength
+  ActiveRecord::ConnectionAdapters::ConnectionPool::Reaper.prepend(ActiveRecordConnectionReaper::Extensions::ActiveRecord::ConnectionAdapters::ReaperCheckMaxAge) # rubocop:disable Layout/LineLength
+  ActiveRecord::ConnectionAdapters::ConnectionPool.prepend(ActiveRecordConnectionReaper::Extensions::ActiveRecord::ConnectionAdapters::PoolMaxAge) # rubocop:disable Layout/LineLength
 end

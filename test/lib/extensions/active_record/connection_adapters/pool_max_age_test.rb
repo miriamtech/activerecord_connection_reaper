@@ -3,14 +3,14 @@
 require 'test_helper'
 require 'activerecord_connection_reaper/extensions/active_record/connection_adapters/abstract_adapter_track_connected_since' # rubocop:disable Layout/LineLength
 
-class PoolMaxAgeTest < TestCase
+class PoolMaxAgeTest < Minitest::Test
   def test_max_age
     pool = pool_with_options(max_age: 10)
     conn = pool.checkout
 
     # In older versions of Rails, the connection we checked out was already
     # connected and active. As of v7.2, it needs to be connected first.
-    if Rails.gem_version >= Gem::Version.new('7.2.0')
+    if ActiveRecord.gem_version >= Gem::Version.new('7.2.0')
       refute_predicate conn, :active?
       conn.connect!
     end
@@ -36,7 +36,7 @@ class PoolMaxAgeTest < TestCase
 
     # In older versions of Rails, the connection we checked out was already
     # connected and active. As of v7.2, it needs to be connected first.
-    if Rails.gem_version >= Gem::Version.new('7.2.0')
+    if ActiveRecord.gem_version >= Gem::Version.new('7.2.0')
       refute_predicate conn, :active?
       conn.connect!
     end
